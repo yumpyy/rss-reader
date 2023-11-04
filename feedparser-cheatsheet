@@ -5,8 +5,12 @@ entries
         title - title
         published - date of publish
         links - 
-            href - link to article
+          href - link to article
         id - link to article
+        author -
+        media_content -
+          0 -
+            url - preview image
         summary - can be used in preview
         content - main content in html
           0 -
@@ -14,4 +18,14 @@ entries
 
 ----
 
-for rss2.0
+for rss2.0 :
+
+entries
+  0 - feed 1
+    title - title
+    summary - summary
+    links -
+      href - link to original article
+    published - date of publish
+    content - 
+      value

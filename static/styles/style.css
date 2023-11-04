@@ -4,5 +4,16 @@ html {
 }
 
 body {
-  margin: 5px 40px;
+  margin: 5px 100px;
+}
+
+img {
+  max-width: 100%;
+  object-fit: scale-down;
+}
+
+@media only screen and (max-width: 600px) {
+  body {
+      margin: 5px 10px;
+    }
 }
