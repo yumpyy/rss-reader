@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>RSS Reader</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{{ url_for('static',filename='styles/style.css') }}" rel="stylesheet">
+  </head>
+  <body>
+    <h1>{{ feed.title }}</h1>
+    <span>{{ feed.published }}</span> | <span>{{ feed.linkOriginal }}</span>
+    <br>
+    <p>{{ feed.content }} </p>
+  </body>
+</html>

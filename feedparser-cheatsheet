@@ -1,0 +1,17 @@
+for atom feeds :
+
+entries
+    0 - feed 1
+        title - title
+        published - date of publish
+        links - 
+            href - link to article
+        id - link to article
+        summary - can be used in preview
+        content - main content in html
+          0 -
+            value - main feed
+
+----
+
+for rss2.0
