@@ -1,0 +1,40 @@
+html {
+  background-color: black;
+  color: white;
+}
+
+header {
+  font-size: 24px;
+}
+
+body {
+  margin: 5px 100px;
+}
+
+a {
+  text-decoration: none;
+  color: white;
+}
+
+.feeds-container {
+  display: grid;
+  grid-template-columns: auto auto auto;
+}
+
+.feed-card {
+  border: 3px solid white;
+  border-radius: 15px;
+  margin: 5px;
+  padding: 5px;
+}
+
+.published-date {
+  font-size: 10px;
+  color: gray;
+}
+
+@media only screen and (max-width: 600px) {
+  body {
+      margin: 5px 15px;
+    }
+}

@@ -4,12 +4,20 @@
     <title>RSS Reader</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="{{ url_for('static',filename='styles/style.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static',filename='styles/main-menu.css') }}" rel="stylesheet">
   </head>
+  <header>
+    <span float="left">RSS Reader</span><span float="right">Test</span>
+  </header>
   <body>
-    <h1>{{ feed.title }}</h1>
-    <span>{{ feed.published }}</span> | <span>{{ feed.linkOriginal }}</span>
-    <br>
-    <p>{{ feed.content }} </p>
+    <div class="feeds-container">
+    {% for feed in articles %}
+      <div class="feed-card">
+        <a href="/articles"><b>{{feed.title}}</b><a>
+        <br>
+        <span class="published-date">{{ feed.published }}</span>
+      </div>
+    {%endfor%}
+    </div>
   </body>
 </html>
