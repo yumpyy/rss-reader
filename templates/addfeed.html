@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>RSS Reader</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/98.css" />
+    <link href="{{ url_for('static',filename='styles/addfeed.css') }}" rel="stylesheet">
+  </head>
+  <body style="font-size: 25px">
+
+    <div class="window" style="width: 300px" position="fixed" margin="50%">
+      <div class="title-bar">
+        <div class="title-bar-text">Add Feeds Here</div>
+        <div class="title-bar-controls">
+          <button aria-label="Minimize"></button>
+          <button aria-label="Maximize"></button>
+          <button aria-label="Close"></button>
+        </div>
+      </div>
+      <div class="window-body" >
+        <p>
+          <ul>
+            <li> Name : The name you want for your feed </li>
+          <br>
+            <li> Url : RSS/Atom feed link</li>
+          </ul>
+        </p>
+
+      </div>
+    </div>
+    
+    <br><br>
+
+    <form action="/add" method="post">
+      <div class="field-row-stacked" style="width: 200px">
+        <label for="name">Name</label><br>
+        <input id="text18" type="text" name="name" ><br>
+      </div>
+
+      <div class="field-row-stacked" style="width: 200px">
+        <label for="url">URL</label><br>
+        <input id="text18" type="text" name="url"><br><br>
+      </div>
+
+      <input type="submit" value="Submit">
+    </form>
+
+    <br><br>
+
+    <div class="sunken-panel" style="height: 120px; width: 270px;">
+      <table class="interactive">
+        <thead style="width: 340px;">
+          <tr>
+            <th>Name</th>
+            <th>URL</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for url, name in urlData %}
+          <tr>
+            <td>{{ name }}</td>
+            <td>{{ url }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <script>
+      document.querySelectorAll('table.interactive').forEach(element => {
+        element.addEventListener('click', (event) => {
+          const row = event.path.find(element => element.tagName === 'TR' && element.parentElement.tagName === 'TBODY');
+          if (row) {
+            row.classList.toggle('highlighted');
+          }
+        })
+      });
+    </script>
+  </body>
+</html>

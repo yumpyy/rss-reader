@@ -7,11 +7,19 @@ def urlsFromDatabase():
 
     cursor.execute("SELECT * FROM feedUrls")
     output = cursor.fetchall()
-
     urlData = output
-    # for url in output:
-    #     urls.append(url[0])
-        
+    
+    print(urlData)
     return urlData
 
-print(urlsFromDatabase())
+def addDataToSql(url, name):
+
+    insertCommand = "INSERT INTO feedUrls VALUES (%s, %s)"
+    
+    try:
+        cursor.execute(insertCommand, (url, name))
+        db.commit()
+        return True
+
+    except:
+        return False
