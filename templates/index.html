@@ -7,15 +7,17 @@
     <link href="{{ url_for('static',filename='styles/main-menu.css') }}" rel="stylesheet">
   </head>
   <header>
-    <span float="left">RSS Reader</span><span float="right">Test</span>
+    <span float="left">RSS Reader</span>
   </header>
   <body>
     <div class="feeds-container">
     {% for feed in articles %}
       <div class="feed-card">
         <a href="/articles"><b>{{feed.title}}</b><a>
+        <a href="{{ feed.linkOriginal }}"> {{ feed.name }} </a>
         <br>
         <span class="published-date">{{ feed.published }}</span>
+        <p>{{ feed.summary }}</p>
       </div>
     {%endfor%}
     </div>

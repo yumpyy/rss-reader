@@ -5,6 +5,9 @@ html {
 
 header {
   font-size: 24px;
+  margin: 10px 0px;
+  width: 100%;
+  background-color: gray; 
 }
 
 body {
@@ -18,14 +21,13 @@ a {
 
 .feeds-container {
   display: grid;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 10px;
 }
 
 .feed-card {
-  border: 3px solid white;
-  border-radius: 15px;
-  margin: 5px;
-  padding: 5px;
+  grid-column: 1 / 4;
+  grid-row: auto;
 }
 
 .published-date {
@@ -37,4 +39,7 @@ a {
   body {
       margin: 5px 15px;
     }
+  .feeds-container {
+    grid-template-columns: 1fr;
+  }
 }

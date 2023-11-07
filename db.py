@@ -8,10 +8,10 @@ def urlsFromDatabase():
     cursor.execute("SELECT * FROM feedUrls")
     output = cursor.fetchall()
 
-    urls = []
-    for url in output:
-        urls.append(url[0])
+    urlData = output
+    # for url in output:
+    #     urls.append(url[0])
         
-    return urls
+    return urlData
 
-# print(urlsFromDatabase())
+print(urlsFromDatabase())
