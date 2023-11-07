@@ -13,7 +13,7 @@
     <div class="feeds-container">
     {% for feed in articles %}
       <div class="feed-card">
-        <a href="/articles"><b>{{feed.title}}</b><a>
+        <a href="/articles?q={{ feed.title }}"><b>{{feed.title}}</b><a>
         <a href="{{ feed.linkOriginal }}"> {{ feed.name }} </a>
         <br>
         <span class="published-date">{{ feed.published }}</span>
