@@ -1,6 +1,6 @@
 import feedparser
-import dateutil.parser
-import datetime
+from datetime import datetime
+from dateutil.parser import parse
 from db import urlsFromDatabase
 
 def feedFetch():
@@ -19,9 +19,10 @@ def feedFetch():
                 feed = {
                         'feed-name' : url[1],
                         'title' : parser['entries'][x]['title'],
-                        'published' : parser['entries'][x]['published'],
+                        'published' : parser['entries'][x]['published_parsed'],
                         'linkOriginal' : parser['entries'][x]['links'][0]['href']
                         }
+
                 if 'summary' in feed:
                     feed['summary'] = parser['entries'][x]['summary']
                 else:
@@ -44,13 +45,18 @@ def feedFetch():
     return articles
 
 def dateSort(articles):
-    for x in range(len(articles)):
-        try:
-            dates = sorted(map(dateutil.parser.parse, articles[x]['published']))
-        except dateutil.parser._parser.ParserError:
-            dates = []
-        sortedDates = [d.strftime('%Y-%m-%d') for d in dates]
-        print(sortedDates)
+    dates = []
+    for article in articles:
+        date = article['published']
+        date = list(date)
+        date = f'{date[0]}/{date[1]}/{date[2]} {date[3]}:{date[4]}'
+        dates.append(date)
 
+        # date.sort(key=lambda date: datetime.strptime(date, '%Y/%m/%d %H:%M'))
+    dates.sort(key=lambda date: datetime.strptime(date, '%Y/%m/%d %H:%M'), reverse=True)
+    print(dates)
+    # Append the sorted dates to the original list
+    articles.sort(key=lambda article: dates[article['published']])
+    
 # feedFetch()
 dateSort(feedFetch())
