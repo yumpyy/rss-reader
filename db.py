@@ -1,6 +1,24 @@
 import mysql.connector as m
+import json
+
+
+with open("./credentials.json", "r") as f:
+    credntials = json.load(f)
+
+    username = credntials['username']
+    password = credntials['password']
+
+    # print(username, password)
+
+    if username and password == "":
+        print('------------------------------------------------------')
+        print("\nSET YOUR USERNAME AND PASSWORD IN ./credentials.json \n")
+        print('------------------------------------------------------')
+
+        exit()
     
-db = m.connect(host="localhost", user="anupam", passwd="anupam", database="reader")
+
+db = m.connect(host="localhost", user=username, passwd=password)
 cursor = db.cursor()
 
 try:
@@ -16,6 +34,8 @@ except:
     print('------------------------------')
     print(f'\nCOULDNT CREATE TABLE!!!\n')
     print('------------------------------')
+
+cursor.execute("USE reader;")
 
 def urlsFromDatabase():
 
