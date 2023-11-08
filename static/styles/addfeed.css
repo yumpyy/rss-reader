@@ -2,6 +2,10 @@ html {
   background-color: #ffffff;
 }
 
+body {
+  margin: 5px 100px;
+}
+
 .form-container {
   margin: 20px;
   width: 60%;

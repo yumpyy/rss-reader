@@ -12,7 +12,7 @@ with open("./credentials.json", "r") as f:
 
     if username and password == "":
         print('------------------------------------------------------')
-        print("\nSET YOUR USERNAME AND PASSWORD IN ./credentials.json \n")
+        print("\n\033[31mSET YOUR USERNAME AND PASSWORD IN ./credentials.json\033[0m\n")
         print('------------------------------------------------------')
 
         exit()
@@ -25,14 +25,14 @@ try:
     cursor.execute("CREATE DATABASE IF NOT EXISTS reader")
 except:
     print('------------------------------')
-    print(f'\nCOULDNT CREATE DATABASE!!!\n')
+    print(f'\n\033[31mCOULDNT CREATE DATABASE!!!\033[0m\n')
     print('------------------------------')
 
 try:
     cursor.execute("CREATE TABLE IF NOT EXISTS reader.feedUrls (urls VARCHAR(900), feedName VARCHAR(255))")
 except:
     print('------------------------------')
-    print(f'\nCOULDNT CREATE TABLE!!!\n')
+    print(f'\n\033[31mCOULDNT CREATE TABLE!!!\033[0m\n')
     print('------------------------------')
 
 cursor.execute("USE reader;")
@@ -54,7 +54,7 @@ def addDataToSql(url, name):
     insertCommand = "INSERT INTO feedUrls VALUES (%s, %s)"
 
     print('---------------------------------------------')
-    print(f'INSERTION CMD : {insertCommand % url % name}')
+    print(f'INSERTION CMD : {insertCommand}, {url}')
     print('---------------------------------------------')
     
     try:

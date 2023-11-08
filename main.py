@@ -3,15 +3,21 @@ from db import urlsFromDatabase
 
 def feedFetch():
     urlData = urlsFromDatabase()
-    # print(urls)
-    # global articles
+    print('-------------------------')
+    print(f'Full Url Data: ')
+    print(f'{urlData}')
+    print('-------------------------')
+
     articles = []
     feed = {}
 
     for url in urlData:
-        # print(url)
+
+        print('-------------------------')
+        print(f'Parsing : {url}')
+        print('-------------------------')
+
         parser = feedparser.parse(url[0])
-        # print(parser)
         for x in range(len(parser['entries'])):
             feed = {
                     'feed-name' : url[1],
@@ -19,12 +25,7 @@ def feedFetch():
                     'published' : parser['entries'][x]['published_parsed'],
                     'linkOriginal' : parser['entries'][x]['links'][0]['href']
                     }
-
-            # if 'summary' in feed:
-            #     feed['summary'] = parser['entries'][x]['summary']
-            # else:
-            #     feed['summary'] = ''
-
+            
             if 'content' in feed:
                 feed['content'] = parser['entries'][x]['content'][0]['value']
             else:
@@ -35,12 +36,11 @@ def feedFetch():
     articles = dateSort(articles)
     return articles
 
+# for sorting all articles date wise
 def dateSort(articles):
     for article in articles:
         date = article['published']
         date = list(date)
-        # date = f'{date[0]}/{date[1]}/{date[2]} {date[3]}:{date[4]}'
-        # article['published'] = date 
 
     articles.sort(key=lambda article: (article['published'][0], article['published'][1], article['published'][2], article['published'][3], article['published'][4]), reverse=True)
 
@@ -52,6 +52,3 @@ def dateSort(articles):
 
     # print(articles)
     return articles
-    
-feedFetch()
-# dateSort(feedFetch())
