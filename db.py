@@ -4,7 +4,7 @@ db = m.connect(host="localhost", user="anupam", passwd="anupam", database="reade
 cursor = db.cursor()
 
 try:
-    cursor.execute("CREATE DATABASE IF NOT EXISTS my_database")
+    cursor.execute("CREATE DATABASE IF NOT EXISTS reader")
 except:
     print('------------------------------')
     print(f'\nCOULDNT CREATE DATABASE!!!\n')
