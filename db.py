@@ -3,6 +3,20 @@ import mysql.connector as m
 db = m.connect(host="localhost", user="anupam", passwd="anupam", database="reader")
 cursor = db.cursor()
 
+try:
+    cursor.execute("CREATE DATABASE IF NOT EXISTS my_database")
+except:
+    print('------------------------------')
+    print(f'\nCOULDNT CREATE DATABASE!!!\n')
+    print('------------------------------')
+
+try:
+    cursor.execute("CREATE TABLE IF NOT EXISTS reader.feedUrls (urls VARCHAR(900), feeName VARCHAR(255))")
+except:
+    print('------------------------------')
+    print(f'\nCOULDNT CREATE TABLE!!!\n')
+    print('------------------------------')
+
 def urlsFromDatabase():
 
     cursor.execute("SELECT * FROM feedUrls")

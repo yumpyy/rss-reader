@@ -1,3 +1,15 @@
 html {
-  background-color: #c0c0c0;
+  background-color: #ffffff;
+}
+
+.form-container {
+  margin: 20px auto;
+  width: 60%;
+  padding: 10px;
+}
+
+form {
+  padding: 25px;
+  display: inline-block;
+  width: 50%;
 }
