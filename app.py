@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request
 from main import feedFetch
-from db import addDataToSql, urlsFromDatabase
+from db import addDataToSql, urlsFromDatabase, deleteDataSql
 
 app = Flask(__name__)
 
@@ -26,18 +26,31 @@ def articleRead():
 
     return render_template("404.html")
 
-@app.route("/add", methods=['POST', 'GET'])
+@app.route("/manage", methods=['POST', 'GET'])
 def addFeed():
 
     if request.method == "GET":
         return render_template("addfeed.html", urlData=urlsFromDatabase())
 
     name = request.form.get("name")
+    action = request.form.get("action")
     url = request.form.get("url")
 
-    if addDataToSql(url, name):
-        return render_template("addfeed.html", urlData=urlsFromDatabase())
+    if action == "Submit":
 
-    return render_template("404.html")
+        if addDataToSql(url, name):
+            return render_template("addfeed.html", urlData=urlsFromDatabase())
+        else:
+            return render_template("404.html")
+
+    elif action == "Delete":
+
+        if deleteDataSql(name):
+            return render_template("addfeed.html", urlData=urlsFromDatabase())
+        else:
+            return render_template("404.html")
+
+    else:
+        return render_template("addfeed.html", urlData=urlsFromDatabase())
 
 app.run(debug=True)

@@ -29,7 +29,7 @@ except:
     print('------------------------------')
 
 try:
-    cursor.execute("CREATE TABLE IF NOT EXISTS reader.feedUrls (urls VARCHAR(900), feeName VARCHAR(255))")
+    cursor.execute("CREATE TABLE IF NOT EXISTS reader.feedUrls (urls VARCHAR(900), feedName VARCHAR(255))")
 except:
     print('------------------------------')
     print(f'\nCOULDNT CREATE TABLE!!!\n')
@@ -43,12 +43,19 @@ def urlsFromDatabase():
     output = cursor.fetchall()
     urlData = output
     
-    print(urlData)
+    print('-------------------------')
+    print(f'Fetched Data : {urlData}')
+    print('-------------------------')
+
     return urlData
 
 def addDataToSql(url, name):
 
     insertCommand = "INSERT INTO feedUrls VALUES (%s, %s)"
+
+    print('---------------------------------------------')
+    print(f'INSERTION CMD : {insertCommand % url % name}')
+    print('---------------------------------------------')
     
     try:
         cursor.execute(insertCommand, (url, name))
@@ -56,4 +63,28 @@ def addDataToSql(url, name):
         return True
 
     except:
+        return False
+
+
+def deleteDataSql(name):
+    deleteCommand = "DELETE FROM feedUrls WHERE feedName=%s"
+    
+    print('---------------------------------------------')
+    print(f'DELETION CMD : {deleteCommand % name}')
+    print('---------------------------------------------')
+
+    try:
+        cursor.execute(deleteCommand, (name,))
+        db.commit()
+
+        print('---------------------------------------------')
+        print('Data deleted successfully')
+        print('---------------------------------------------')
+
+        return True
+    except:
+
+        print('---------------------------------------------')
+        print('Failed to delete data')
+        print('---------------------------------------------')
         return False
