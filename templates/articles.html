@@ -4,12 +4,15 @@
     <title>RSS Reader</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/papercss@1.9.2/dist/paper.css" />
     <link href="{{ url_for('static',filename='styles/style.css') }}" rel="stylesheet">
   </head>
   <body>
-    <h1>{{ article.title }}</h1>
-    <span>{{ article.published }}</span> | <span>{{ article.linkOriginal }}</span>
+    <article class="article">
+    <h1 class="article-title">{{ article.title }}</h1>
+    <span class="article-meta"> Original Date : {{ article.published }} / Original Link : {{ article.linkOriginal }}</span>
     <br>
     <p>{{ article.content }} </p>
+    </article>
   </body>
 </html>
