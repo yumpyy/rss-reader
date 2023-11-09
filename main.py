@@ -50,5 +50,5 @@ def dateSort(articles):
         date = f'{date[0]}/{date[1]}/{date[2]} {date[3]}:{date[4]}'
         article['published'] = date 
 
-    # print(articles)
+    print(articles)
     return articles

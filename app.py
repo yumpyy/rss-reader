@@ -8,13 +8,14 @@ app.jinja_env.autoescape = False
 
 @app.route("/")
 def mainMenu():
+    global articlesLis
+
     articlesList = feedFetch()
     return render_template("index.html", articles=articlesList)
     
 
 @app.route("/articles")
 def articleRead():
-    articlesList = feedFetch()
 
     articleRequested = request.args.get("q")
 
