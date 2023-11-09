@@ -18,8 +18,8 @@
     {% for feed in articles %}
       <div class="card">
         <div class="card-body">
-        <a class="card-title" href="/articles?q={{ feed.linkOriginal}}"><b>{{feed.title}}</b><a>
-        <a class="card-link" href="{{ feed.linkOriginal }}"> {{ feed.name }} </a><br>
+        <a class="card-title" href="/articles?q={{ feed.linkOriginal}}"><b>{{feed.title}}</b></a><br>
+        <span class="text-muted feed-name">{{ feed.name }}</span><br>
         <span class="published-date card-text">{{ feed.published }}</span>
         </div>
       </div>

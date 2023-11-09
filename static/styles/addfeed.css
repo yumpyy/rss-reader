@@ -17,3 +17,9 @@ form {
   display: inline-block;
   width: 50%;
 }
+
+@media only screen and (max-width: 600px) {
+  body {
+      margin: 5px 15px;
+    }
+}

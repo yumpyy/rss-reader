@@ -20,7 +20,7 @@ def feedFetch():
         parser = feedparser.parse(url[0])
         for x in range(len(parser['entries'])):
             feed = {
-                    'feed-name' : url[1],
+                    'name' : url[1],
                     'title' : parser['entries'][x]['title'],
                     'published' : parser['entries'][x]['published_parsed'],
                     'linkOriginal' : parser['entries'][x]['links'][0]['href']
