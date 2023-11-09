@@ -6,21 +6,22 @@ app = Flask(__name__)
 
 app.jinja_env.autoescape = False
 
+articlesList = [] 
+articlesList = feedFetch()
+
 @app.route("/")
 def mainMenu():
-    global articlesList
-
-    articlesList = feedFetch()
     return render_template("index.html", articles=articlesList)
     
 
 @app.route("/articles")
 def articleRead():
-
     articleRequested = request.args.get("q")
-
+    
+    print(articlesList)
     for feed in articlesList:
-        if articleRequested == feed["title"]:
+        print('----', feed["linkOriginal"])
+        if articleRequested == feed["linkOriginal"]:
             return render_template("articles.html", article=feed)
         else:
             continue
