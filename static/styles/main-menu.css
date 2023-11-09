@@ -10,6 +10,12 @@ h1 {
   margin: 0.67em 0;
 }
 
+img {
+  max-width: 100%;
+  object-fit: scale-down;
+}
+
+
 .card-title {
   color: #41403e;
   text-decoration: none;

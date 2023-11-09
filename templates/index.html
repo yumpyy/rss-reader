@@ -12,6 +12,7 @@
     <ul class="breadcrumb border">
       <li><a class="active" href="/">Home</a></li>
       <li><a href="/manage">Manage</a></li>
+      <li><a href="/?action=refresh">Refresh</a></li>
     </ul>
 
     <div class="feeds-container">
@@ -19,6 +20,7 @@
       <div class="card">
         <div class="card-body">
         <a class="card-title" href="/articles?q={{ feed.linkOriginal}}"><b>{{feed.title}}</b></a><br>
+        <!-- <p style="font-size: 17px">{{ feed.summary }}</p> -->
         <span class="text-muted feed-name">{{ feed.name }}</span><br>
         <span class="published-date card-text">{{ feed.published }}</span>
         </div>

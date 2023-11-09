@@ -10,15 +10,24 @@ articlesList = feedFetch()
 
 @app.route("/")
 def mainMenu():
-    return render_template("index.html", articles=articlesList)
-    
+    action = request.args.get("action")
+    if action == "refresh":
+        print('-------------')
+        print('REFRESHING...')
+        print('-------------')
+
+        articles = feedFetch()
+        return render_template("index.html", articles=articles)
+        
+    else:
+        return render_template("index.html", articles=articlesList)
+
 
 @app.route("/articles")
 def articleRead():
     articleRequested = request.args.get("q")
     
     for feed in articlesList:
-        print('----', feed["linkOriginal"])
         if articleRequested == feed["linkOriginal"]:
             return render_template("articles.html", article=feed)
         else:

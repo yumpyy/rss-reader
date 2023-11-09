@@ -25,11 +25,13 @@ def feedFetch():
                     'published' : parser['entries'][x]['published_parsed'],
                     'linkOriginal' : parser['entries'][x]['links'][0]['href']
                     }
-            
+
             if 'content' in feed:
                 feed['content'] = parser['entries'][x]['content'][0]['value']
             else:
                 feed['content'] = parser['entries'][x]['summary']
+
+            feed['summary'] = feed['content'][0:300]
 
             articles.append(feed)
 

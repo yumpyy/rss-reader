@@ -154,6 +154,9 @@ cython_debug/
 
 # Testing files
 test*
+*.xml
+todo
+credentials.json
 
 # PyCharm
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
