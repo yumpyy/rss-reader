@@ -3,7 +3,7 @@
 simple rss reader made using flask  
 a centralised way to get your daily news/feed.
 
-twitter and youtube rss feed urls can obtained by using alternate privacy focused frontends like [nitter](https://nitter.soopy.moe/) (for twitter) and [invidious](https://inv.vern.cc)  (for youtube)
+twitter and youtube rss feed urls can obtained by using alternate privacy focused frontends like [nitter](https://nitter.soopy.moe/) (for twitter) and [invidious](https://inv.in.projectsegfau.lt/)  (for youtube)
 
 ## insallation/usage
 
