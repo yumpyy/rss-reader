@@ -16,16 +16,6 @@ entries
           0 -
             value - main feed
 
-----
-
-for rss2.0 :
-
-entries
-  0 - feed 1
-    title - title
-    summary - summary
-    links -
-      href - link to original article
-    published - date of publish
-    content - 
-      value
+    1 - feed 2
+      ...
+        ...

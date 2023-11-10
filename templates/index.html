@@ -1,31 +1,39 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <title>RSS Reader</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://unpkg.com/papercss@1.9.2/dist/paper.css" />
-    <link href="{{ url_for('static',filename='styles/main-menu.css') }}" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/papercss@1.9.2/dist/paper.css"
+    />
+    <link
+      href="{{ url_for('static',filename='styles/main-menu.css') }}"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <h1>Feeder</h1>
     <ul class="breadcrumb border">
       <li><a class="active" href="/">Home</a></li>
       <li><a href="/manage">Manage</a></li>
-      <li><a href="/?action=refresh">Refresh</a></li>
+      <li><a href="/">Refresh</a></li>
     </ul>
 
     <div class="feeds-container">
-    {% for feed in articles %}
+      {% for feed in articles %}
       <div class="card">
         <div class="card-body">
-        <a class="card-title" href="/articles?q={{ feed.linkOriginal}}"><b>{{feed.title}}</b></a><br>
-        <!-- <p style="font-size: 17px">{{ feed.summary }}</p> -->
-        <span class="text-muted feed-name">{{ feed.name }}</span><br>
-        <span class="published-date card-text">{{ feed.published }}</span>
+          <a class="card-title" href="/articles?q={{ feed.linkOriginal}}"
+            ><b>{{feed.title}}</b></a
+          ><br />
+          <!-- <p style="font-size: 17px">{{ feed.summary }}</p> -->
+          <span class="text-muted feed-name">{{ feed.name }}</span><br />
+          <span class="published-date card-text">{{ feed.published }}</span>
         </div>
       </div>
-    {%endfor%}
+      {%endfor%}
     </div>
   </body>
 </html>
