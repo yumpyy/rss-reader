@@ -30,6 +30,7 @@ except:
 
 try:
     cursor.execute("CREATE TABLE IF NOT EXISTS reader.feedUrls (urls VARCHAR(900), feedName VARCHAR(255))")
+
 except:
     print('------------------------------')
     print(f'\n\033[31mCOULDNT CREATE TABLE!!!\033[0m\n')
@@ -60,6 +61,7 @@ def addDataToSql(url, name):
     try:
         cursor.execute(insertCommand, (url, name))
         db.commit()
+        
         return True
 
     except:

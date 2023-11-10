@@ -7,6 +7,7 @@ app = Flask(__name__)
 app.jinja_env.autoescape = False
 
 articlesList = feedFetch()
+urlData = urlsFromDatabase()
 
 @app.route("/")
 def mainMenu():
@@ -16,9 +17,9 @@ def mainMenu():
         print('REFRESHING...')
         print('-------------')
         
-        global articles
-        articles = feedFetch()
-        return render_template("index.html", articles=articles)
+        global articlesList
+        articlesList = feedFetch()
+        return render_template("index.html", articles=articlesList)
         
     else:
         return render_template("index.html", articles=articlesList)
