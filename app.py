@@ -15,7 +15,8 @@ def mainMenu():
         print('-------------')
         print('REFRESHING...')
         print('-------------')
-
+        
+        global articles
         articles = feedFetch()
         return render_template("index.html", articles=articles)
         
