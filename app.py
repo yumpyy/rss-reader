@@ -67,6 +67,7 @@ def addFeed():
 with open("./credentials.json", "r") as f:
     credntials = json.load(f)
     port = credntials["port"]
+    print(port)
 
 try:
     app.run(debug=True, port=port)
