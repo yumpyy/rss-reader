@@ -20,12 +20,16 @@
     </ul>
 
     <article class="article">
-      <h1 class="article-title text-secondary">{{ article.title }}</h1>
+      <h1 id="top" class="article-title text-secondary">{{ article.title }}</h1>
 
       <span class="article-meta" style="font-size: 17px;">
         <u><a href="{{ article.linkOriginal }}"> {{ article.name }} </a></u> on {{ article.published }}</span>
       <br />
       <p>{{ article.content }}</p>
     </article>
+
+    <div class="to-top">
+      <a class="top-btn" href="#top">^</a>
+    </div>
   </body>
 </html>
