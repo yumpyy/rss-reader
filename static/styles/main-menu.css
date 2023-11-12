@@ -105,4 +105,11 @@ a {
   .feeds-container {
     grid-template-columns: 1fr;
   }
+  .to-top .top-btn {
+    bottom: 35px;
+    float: right;
+    right: 20%;
+    left: 80%;
+    width: 100%;
+  }
 }

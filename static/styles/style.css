@@ -61,4 +61,11 @@ img {
   body {
       margin: 5px 15px;
     }
+  .to-top .top-btn {
+    bottom: 35px;
+    float: right;
+    right: 20%;
+    left: 80%;
+    width: 100%;
+  }
 }
