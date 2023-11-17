@@ -20,7 +20,7 @@ def feedFetch():
         print("-------------------------")
 
         parser = feedparser.parse(url[0])
-        print(parser)
+        # print(parser)
         for x in range(len(parser["entries"])):
             try:
                 feed = {
@@ -35,7 +35,8 @@ def feedFetch():
                     feed["content"] = parser["entries"][x]["content"][0]["value"]
                 else:
                     feed["content"] = parser["entries"][x]["summary"]
-
+                
+                # print(feed)
                 articles.append(feed)
 
             except KeyError as e:

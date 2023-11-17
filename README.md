@@ -7,7 +7,7 @@ twitter and youtube rss feed urls can obtained by using alternate privacy focuse
 
 some example rss feeds:
 ```
-https://xkcd.com/atom.xml
+https://xkcd.com/rss.xml
 https://ravidwivedi.in/posts/index.xml
 ```
 
