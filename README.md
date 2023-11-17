@@ -13,7 +13,9 @@ https://ravidwivedi.in/posts/index.xml
 
 ## insallation/usage
 
-run this command in terminal
+1. add your username & password in `./credentials.json`
+
+2. run this command in terminal
 
 linux/macos :
 
@@ -33,4 +35,4 @@ pip install -r requirements.txt && \
 python app.py \
 ```
 
-now head over to localhost:5000 to view the rss reader
+3. head over to localhost:5000 to view the rss reader

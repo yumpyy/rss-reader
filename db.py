@@ -3,11 +3,11 @@ import json
 
 
 with open("./credentials.json", "r") as f:
-    credntials = json.load(f)
+    credentials = json.load(f)
 
-    username = credntials["username"]
-    password = credntials["password"]
-    host = credntials["db-host"]
+    username = credentials["username"]
+    password = credentials["password"]
+    host = credentials["db-host"]
 
     # print(username, password)
 
@@ -29,10 +29,10 @@ try:
     )
     cursor.execute("USE reader;")
 
-except m.connector.Error as e:
+except m.Error as e:
     print("------------------------------")
-    print(f"\033Error Code : {e.errno}\033[0m")
-    print(f"\033Error Message : {e.msg}\033[0m")
+    print(f"\033[31m Error Code : {e.errno}\033[0m")
+    print(f"\033[31m Error Message : {e.msg}\033[0m")
     print("------------------------------")
 
 
