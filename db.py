@@ -115,25 +115,33 @@ def feedFetch():
             uniqueID = uuid.uuid4().hex
             title = parser["entries"][x]["title"]
 
-            published = parser["entries"][x]["published_parsed"]
-            published = list(published)
-            published = f"{published[0]}/{published[1]}/{published[2]} {published[3]}:{published[4]}"
+            cursor.execute("SELECT * FROM articles WHERE title=%s", (title,))
+            existingArticle = cursor.fetchone()
 
-            linkOriginal = parser["entries"][x]["links"][0]["href"]
+            if existingArticle is None:
 
-            if "content" in parser["entries"][x]:
-                content = parser["entries"][x]["content"][0]["value"]
+                published = parser["entries"][x]["published_parsed"]
+                published = list(published)
+                published = f"{published[0]}/{published[1]}/{published[2]} {published[3]}:{published[4]}"
+
+                linkOriginal = parser["entries"][x]["links"][0]["href"]
+
+                if "content" in parser["entries"][x]:
+                    content = parser["entries"][x]["content"][0]["value"]
+                else:
+                    content = parser["entries"][x]["summary"]
+
+                viewed = "n"
+
+                insertCommand = "INSERT INTO articles VALUES (%s, %s, %s, %s, %s, %s, %s)"
+                cursor.execute(
+                    insertCommand,
+                    (name, uniqueID, title, published, linkOriginal, content, viewed),
+                )
+                db.commit()
+            
             else:
-                content = parser["entries"][x]["summary"]
-
-            viewed = "n"
-
-            insertCommand = "INSERT INTO articles VALUES (%s, %s, %s, %s, %s, %s, %s)"
-            cursor.execute(
-                insertCommand,
-                (name, uniqueID, title, published, linkOriginal, content, viewed),
-            )
-            db.commit()
+                print(f'Duplicate article {title}')
 
     cursor.execute(
         "SELECT * FROM articles ORDER BY STR_TO_DATE(published, '%Y/%m/%d') DESC"
