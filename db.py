@@ -29,7 +29,7 @@ try:
         "CREATE TABLE IF NOT EXISTS reader.feedUrls (urls VARCHAR(900), feedName VARCHAR(255))"
     )
     cursor.execute(
-        "CREATE TABLE IF NOT EXISTS reader.articles (name VARCHAR(255) NOT NULL, uniqueID VARCHAR(32) NOT NULL, title VARCHAR(255) NOT NULL, published VARCHAR(255) NOT NULL, linkOriginal VARCHAR(255) NOT NULL, content MEDIUMTEXT, viewed ENUM('y', 'n'), UNIQUE(uniqueID))"
+        "CREATE TABLE IF NOT EXISTS reader.articles (name VARCHAR(255) NOT NULL, uniqueID VARCHAR(32) NOT NULL, title VARCHAR(255) NOT NULL, published VARCHAR(255) NOT NULL, linkOriginal VARCHAR(255) NOT NULL, content MEDIUMTEXT, viewed ENUM('y', 'n'), UNIQUE(title))"
     )
     cursor.execute("USE reader")
 
@@ -136,7 +136,7 @@ def feedFetch():
             db.commit()
 
     cursor.execute(
-        "SELECT * FROM articles ORDER BY STR_TO_DATE(published, '%Y/%m/%d %H:%M') DESC"
+        "SELECT * FROM articles ORDER BY STR_TO_DATE(published, '%Y/%m/%d') DESC"
     )
     fetchedData = cursor.fetchall()
 
@@ -155,6 +155,7 @@ def feedFetch():
         articles.append(feed)
 
     return articles
+
 
 def markArticleRead(uniqueID):
     updateCommand = "UPDATE articles SET viewed = 'y' WHERE uniqueID=%s"
