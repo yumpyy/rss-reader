@@ -14,28 +14,33 @@
     />
   </head>
   <body>
-    <h1 id="top" >Feeder</h1>
-    <ul class="breadcrumb border">
-      <li><a class="active" href="/">Home</a></li>
-      <li><a href="/manage">Manage</a></li>
-      <li><a href="/">Refresh</a></li>
-    </ul>
+    <h1 id="top">Feeder</h1>
+    <div class="navbar">
+      <ul class="breadcrumb border">
+        <li><a class="active" href="/">Home</a></li>
+        <li><a href="/manage">Manage</a></li>
+        <li><a href="/">Refresh</a></li>
+      </ul>
+    </div>
+    
+    <!-- <div class="tag-filter flex-center row child-borders"> -->
+    <!--   <a href="paper-btn margin"></a> -->
+    <!-- </div> -->
 
     <div class="feeds-container">
       {% for feed in articles %}
       <div class="card">
         <div class="card-body">
-          <a class="card-title" href="/articles?q={{ feed.linkOriginal}}">
+          <a class="card-title" href="/articles?q={{ feed.id }}">
             <b>{{feed.title}}</b></a
           ><br />
-          <!-- <p style="font-size: 17px">{{ feed.summary }}</p> -->
           <span class="text-muted feed-name">{{ feed.name }}</span><br />
           <span class="published-date card-text">{{ feed.published }}</span>
         </div>
       </div>
       {%endfor%}
     </div>
-    
+
     <div class="to-top">
       <a class="top-btn" href="#top">^</a>
     </div>

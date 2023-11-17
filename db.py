@@ -7,6 +7,7 @@ with open("./credentials.json", "r") as f:
 
     username = credntials["username"]
     password = credntials["password"]
+    host = credntials["db-host"]
 
     # print(username, password)
 
@@ -18,27 +19,21 @@ with open("./credentials.json", "r") as f:
         exit()
 
 
-db = m.connect(host="localhost", user=username, passwd=password)
+db = m.connect(host=host, user=username, passwd=password)
 cursor = db.cursor()
 
 try:
     cursor.execute("CREATE DATABASE IF NOT EXISTS reader")
-except:
-    print("------------------------------")
-    print(f"\n\033[31mCOULDNT CREATE DATABASE!!!\033[0m\n")
-    print("------------------------------")
-
-try:
     cursor.execute(
         "CREATE TABLE IF NOT EXISTS reader.feedUrls (urls VARCHAR(900), feedName VARCHAR(255))"
     )
+    cursor.execute("USE reader;")
 
-except:
+except m.connector.Error as e:
     print("------------------------------")
-    print(f"\n\033[31mCOULDNT CREATE TABLE!!!\033[0m\n")
+    print(f"\033Error Code : {e.errno}\033[0m")
+    print(f"\033Error Message : {e.msg}\033[0m")
     print("------------------------------")
-
-cursor.execute("USE reader;")
 
 
 def urlsFromDatabase():
@@ -46,9 +41,9 @@ def urlsFromDatabase():
     output = cursor.fetchall()
     urlData = output
 
-    print("-------------------------")
-    print(f"Fetched Data : {urlData}")
-    print("-------------------------")
+    # print("-------------------------")
+    # print(f"Fetched Data : {urlData}")
+    # print("-------------------------")
 
     return urlData
 
@@ -90,4 +85,5 @@ def deleteDataSql(name):
         print("---------------------------------------------")
         print("Failed to delete data")
         print("---------------------------------------------")
+
         return False

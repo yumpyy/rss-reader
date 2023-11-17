@@ -28,12 +28,3 @@ python app.py \
 ```
 
 now head over to localhost:5000 to view the rss reader
-
-## todo
-
-- [ ] logs
-- [ ] maybe a electron app?
-- [ ] normal json file instead of some database
-- [ ] a way to view articles from specific feed
-- [x] gui using flask
-- [x] nicer looking ui 

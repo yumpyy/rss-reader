@@ -1,4 +1,6 @@
 import feedparser
+import uuid
+
 from db import urlsFromDatabase
 
 
@@ -23,6 +25,7 @@ def feedFetch():
             try:
                 feed = {
                     "name": url[1],
+                    "id": uuid.uuid4().hex,
                     "title": parser["entries"][x]["title"],
                     "published": parser["entries"][x]["published_parsed"],
                     "linkOriginal": parser["entries"][x]["links"][0]["href"],

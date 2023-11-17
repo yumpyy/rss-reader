@@ -30,7 +30,7 @@ def articleRead():
     articleRequested = request.args.get("q")
 
     for feed in articlesList:
-        if articleRequested == feed["linkOriginal"]:
+        if articleRequested == feed["id"]:
             return render_template("articles.html", article=feed)
         else:
             continue
@@ -67,10 +67,10 @@ def addFeed():
 with open("./credentials.json", "r") as f:
     credntials = json.load(f)
     port = credntials["port"]
-    print(port)
+    host = credntials["server-host"]
 
 try:
-    app.run(debug=True, port=port)
+    app.run(debug=True, port=port, host=host)
 except OSError:
     print(
         "\n\033[31m SOME OTHER SERVICE IS RUNNING ON DEFAULT PORT 5000\nCONSIDER CHANGING PORT IN ./credentials.json \033[0m\n"
