@@ -1,6 +1,7 @@
 import mysql.connector as m
 import json
-
+import feedparser
+import uuid
 
 with open("./credentials.json", "r") as f:
     credentials = json.load(f)
@@ -27,13 +28,16 @@ try:
     cursor.execute(
         "CREATE TABLE IF NOT EXISTS reader.feedUrls (urls VARCHAR(900), feedName VARCHAR(255))"
     )
-    cursor.execute("USE reader;")
+    cursor.execute(
+        "CREATE TABLE IF NOT EXISTS reader.articles (name VARCHAR(255) NOT NULL, uniqueID VARCHAR(32) NOT NULL, title VARCHAR(255) NOT NULL, published VARCHAR(255) NOT NULL, linkOriginal VARCHAR(255) NOT NULL, content MEDIUMTEXT, viewed ENUM('y', 'n'), UNIQUE(uniqueID))"
+    )
+    cursor.execute("USE reader")
 
 except m.Error as e:
-    print("------------------------------")
+    print("---------------------------------------------")
     print(f"\033[31m Error Code : {e.errno}\033[0m")
     print(f"\033[31m Error Message : {e.msg}\033[0m")
-    print("------------------------------")
+    print("---------------------------------------------")
 
     exit()
 
@@ -50,7 +54,7 @@ def urlsFromDatabase():
     return urlData
 
 
-def addDataToSql(url, name):
+def addFeedUrlsToSql(url, name):
     insertCommand = "INSERT INTO feedUrls VALUES (%s, %s)"
 
     print("---------------------------------------------")
@@ -89,3 +93,71 @@ def deleteDataSql(name):
         print("---------------------------------------------")
 
         return False
+
+
+def feedFetch():
+    urlData = urlsFromDatabase()
+
+    print("-------------------------")
+    print(f"Full Url Data: ")
+    print(f"{urlData}")
+    print("-------------------------")
+
+    for url in urlData:
+        print("-------------------------")
+        print(f"Parsing : {url}")
+        print("-------------------------")
+
+        parser = feedparser.parse(url[0])
+
+        for x in range(len(parser["entries"])):
+            name = url[1]
+            uniqueID = uuid.uuid4().hex
+            title = parser["entries"][x]["title"]
+
+            published = parser["entries"][x]["published_parsed"]
+            published = list(published)
+            published = f"{published[0]}/{published[1]}/{published[2]} {published[3]}:{published[4]}"
+
+            linkOriginal = parser["entries"][x]["links"][0]["href"]
+
+            if "content" in parser["entries"][x]:
+                content = parser["entries"][x]["content"][0]["value"]
+            else:
+                content = parser["entries"][x]["summary"]
+
+            viewed = "n"
+
+            insertCommand = "INSERT INTO articles VALUES (%s, %s, %s, %s, %s, %s, %s)"
+            cursor.execute(
+                insertCommand,
+                (name, uniqueID, title, published, linkOriginal, content, viewed),
+            )
+            db.commit()
+
+    cursor.execute(
+        "SELECT * FROM articles ORDER BY STR_TO_DATE(published, '%Y/%m/%d %H:%M') DESC"
+    )
+    fetchedData = cursor.fetchall()
+
+    articles = []
+
+    for article in fetchedData:
+        feed = {
+            "name": article[0],
+            "uniqueID": article[1],
+            "title": article[2],
+            "published": article[3],
+            "linkOriginal": article[4],
+            "content": article[5],
+            "viewed": article[6],
+        }
+        articles.append(feed)
+
+    return articles
+
+def markArticleRead(uniqueID):
+    updateCommand = "UPDATE articles SET viewed = 'y' WHERE uniqueID=%s"
+
+    cursor.execute(updateCommand, (uniqueID,))
+    db.commit()

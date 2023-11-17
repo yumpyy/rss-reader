@@ -31,7 +31,7 @@
       {% for feed in articles %}
       <div class="card">
         <div class="card-body">
-          <a class="card-title" href="/articles?q={{ feed.id }}">
+          <a class="card-title" href="/articles?q={{ feed.uniqueID }}">
             <b>{{feed.title}}</b></a
           ><br />
           <span class="text-muted feed-name">{{ feed.name }}</span><br />

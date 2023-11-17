@@ -1,12 +1,13 @@
 import json
 from flask import Flask, render_template, request
-from main import feedFetch
-from db import addDataToSql, urlsFromDatabase, deleteDataSql
+
+import db
 
 app = Flask(__name__)
 app.jinja_env.autoescape = False
 
-articlesList = feedFetch()
+articlesList = db.feedFetch()
+print(articlesList)
 
 
 @app.route("/")
@@ -18,7 +19,7 @@ def mainMenu():
         print("-------------")
 
         global articlesList
-        articlesList = feedFetch()
+        articlesList = db.feedFetch()
         return render_template("index.html", articles=articlesList)
 
     else:
@@ -27,10 +28,12 @@ def mainMenu():
 
 @app.route("/articles")
 def articleRead():
-    articleRequested = request.args.get("q")
+    articleRequestedID = request.args.get("q")
 
     for feed in articlesList:
-        if articleRequested == feed["id"]:
+        if articleRequestedID == feed["uniqueID"]:
+            db.markArticleRead(feed["uniqueID"])
+
             return render_template("articles.html", article=feed)
         else:
             continue
@@ -42,32 +45,32 @@ def articleRead():
 @app.route("/manage", methods=["POST", "GET"])
 def addFeed():
     if request.method == "GET":
-        return render_template("addfeed.html", urlData=urlsFromDatabase())
+        return render_template("addfeed.html", urlData=db.urlsFromDatabase())
 
     name = request.form.get("name")
     action = request.form.get("action")
     url = request.form.get("url")
 
     if action == "Submit":
-        if addDataToSql(url, name):
-            return render_template("addfeed.html", urlData=urlsFromDatabase())
+        if db.addFeedUrlsToSql(url, name):
+            return render_template("addfeed.html", urlData=db.urlsFromDatabase())
         else:
             return render_template("404.html")
 
     elif action == "Delete":
-        if deleteDataSql(name):
-            return render_template("addfeed.html", urlData=urlsFromDatabase())
+        if db.deleteDataSql(name):
+            return render_template("addfeed.html", urlData=db.urlsFromDatabase())
         else:
             return render_template("404.html")
 
     else:
-        return render_template("addfeed.html", urlData=urlsFromDatabase())
+        return render_template("addfeed.html", urlData=db.urlsFromDatabase())
 
 
 with open("./credentials.json", "r") as f:
-    credntials = json.load(f)
-    port = credntials["port"]
-    host = credntials["server-host"]
+    credentials = json.load(f)
+    port = credentials["port"]
+    host = credentials["server-host"]
 
 try:
     app.run(debug=True, port=port, host=host)
