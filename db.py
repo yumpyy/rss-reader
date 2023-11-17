@@ -11,7 +11,7 @@ with open("./credentials.json", "r") as f:
 
     # print(username, password)
 
-    if username and password == "":
+    if username == "":
         print("------------------------------------------------------")
         print("\n\033[31mSET YOUR USERNAME AND PASSWORD IN ./credentials.json\033[0m\n")
         print("------------------------------------------------------")
@@ -34,6 +34,8 @@ except m.Error as e:
     print(f"\033[31m Error Code : {e.errno}\033[0m")
     print(f"\033[31m Error Message : {e.msg}\033[0m")
     print("------------------------------")
+
+    exit()
 
 
 def urlsFromDatabase():
