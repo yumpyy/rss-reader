@@ -8,10 +8,12 @@
       rel="stylesheet"
       href="https://unpkg.com/papercss@1.9.2/dist/paper.css"
     />
+    <link rel="stylesheet" href="https://www.nerdfonts.com/assets/css/webfont.css">
     <link
       href="{{ url_for('static',filename='styles/main-menu.css') }}"
       rel="stylesheet"
     />
+    <link rel="icon" href="./favicon.ico">
   </head>
   <body>
     <h1 id="top">Feeder</h1>
@@ -19,10 +21,10 @@
       <ul class="breadcrumb border">
         <li><a class="active" href="/">Home</a></li>
         <li><a href="/manage">Manage</a></li>
-        <li><a href="/">Refresh</a></li>
+        <li><a href="/?action=refresh">Refresh</a></li>
       </ul>
     </div>
-    
+
     <!-- <div class="tag-filter flex-center row child-borders"> -->
     <!--   <a href="paper-btn margin"></a> -->
     <!-- </div> -->

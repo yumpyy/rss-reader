@@ -12,18 +12,20 @@
       href="{{ url_for('static',filename='styles/style.css') }}"
       rel="stylesheet"
     />
+    <link rel="icon" href="favicon.ico">
   </head>
   <body>
     <ul class="breadcrumb border">
       <li><a class="active" href="/">Home</a></li>
       <li><a href="/manage">Manage</a></li>
+      <li><a href="/articles?fullfetch={{ article.linkOriginal }}">Full Fetch</a></li>
     </ul>
 
     <article class="article">
       <h1 id="top" class="article-title text-secondary">{{ article.title }}</h1>
 
       <span class="article-meta" style="font-size: 17px;">
-        <u><a href="{{ article.linkOriginal }}"> {{ article.name }} </a></u> on {{ article.published }}</span>
+        <u><a id="author-link" href="{{ article.linkOriginal }}"> {{ article.name }} </a></u> on {{ article.published }}</span>
       <br />
       <p>{{ article.content }}</p>
     </article>

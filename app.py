@@ -2,6 +2,7 @@ import json
 from flask import Flask, render_template, request
 
 import db
+from htmlCleaning import cleanHTML
 
 app = Flask(__name__)
 app.jinja_env.autoescape = False
@@ -29,10 +30,17 @@ def mainMenu():
 @app.route("/articles")
 def articleRead():
     articleRequestedID = request.args.get("q")
+    ariceleRequestedLink = request.args.get("fullfetch")
 
     for feed in articlesList:
         if articleRequestedID == feed["uniqueID"]:
             db.markArticleRead(feed["uniqueID"])
+
+            return render_template("articles.html", article=feed)
+
+        elif ariceleRequestedLink == feed["linkOriginal"]:
+            cleanContent = cleanHTML(ariceleRequestedLink)
+            feed["content"] = cleanContent
 
             return render_template("articles.html", article=feed)
         else:

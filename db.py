@@ -72,14 +72,16 @@ def addFeedUrlsToSql(url, name):
 
 
 def deleteDataSql(name):
-    deleteCommand = "DELETE FROM feedUrls WHERE feedName=%s"
+    deleteFeedUrls = "DELETE FROM feedUrls WHERE feedName=%s"
+    deleteRelatedArticles = "DELETE FROM articles WHERE name=%s"
 
     print("---------------------------------------------")
-    print(f"DELETION CMD : {deleteCommand % name}")
+    print(f"DELETION CMD : {deleteFeedUrls % name}")
     print("---------------------------------------------")
 
     try:
-        cursor.execute(deleteCommand, (name,))
+        cursor.execute(deleteFeedUrls, (name,))
+        cursor.execute(deleteRelatedArticles, (name,))
         db.commit()
 
         print("---------------------------------------------")
@@ -141,7 +143,7 @@ def feedFetch():
                 db.commit()
             
             else:
-                print(f'Duplicate article {title}')
+                continue
 
     cursor.execute(
         "SELECT * FROM articles ORDER BY STR_TO_DATE(published, '%Y/%m/%d') DESC"
