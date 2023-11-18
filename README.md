@@ -21,7 +21,7 @@ linux/macos :
 python -m venv env && \
 source ./env/bin/activate && \
 pip install -r requirements.txt && \
-python app.py \
+python app.py
 ```
 
 windows (powershell):
@@ -30,7 +30,7 @@ windows (powershell):
 python -m venv env && \
 ./env/bin/Activate.ps1 && \
 pip install -r requirements.txt && \
-python app.py \
+python app.py
 ```
 
 2. head over to localhost:5000 to view the rss reader
