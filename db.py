@@ -29,7 +29,7 @@ try:
         "CREATE TABLE IF NOT EXISTS reader.feedUrls (urls VARCHAR(900), feedName VARCHAR(255))"
     )
     cursor.execute(
-        "CREATE TABLE IF NOT EXISTS reader.articles (name VARCHAR(255) NOT NULL, uniqueID VARCHAR(32) NOT NULL, title VARCHAR(255) NOT NULL, published VARCHAR(255) NOT NULL, linkOriginal VARCHAR(255) NOT NULL, content MEDIUMTEXT, viewed ENUM('y', 'n'), UNIQUE(title))"
+        "CREATE TABLE IF NOT EXISTS reader.articles (name VARCHAR(255) NOT NULL, uniqueID VARCHAR(32) NOT NULL, title VARCHAR(255) NOT NULL, published VARCHAR(255) NOT NULL, linkOriginal VARCHAR(255) NOT NULL, content MEDIUMTEXT CHARACTER SET utf8mb4, viewed ENUM('y', 'n'), UNIQUE(title))"
     )
     cursor.execute("USE reader")
 
