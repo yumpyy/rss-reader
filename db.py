@@ -122,7 +122,11 @@ def feedFetch():
 
             if existingArticle is None:
 
-                published = parser["entries"][x]["published_parsed"]
+                if "published_parsed" in parser["entries"][x]:
+                    published = parser["entries"][x]["published_parsed"]
+                else:
+                    published = parser["entries"][x]["updated_parsed"]
+
                 published = list(published)
                 published = f"{published[0]}/{published[1]}/{published[2]} {published[3]}:{published[4]}"
 

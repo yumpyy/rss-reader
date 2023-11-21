@@ -13,7 +13,7 @@
       href="{{ url_for('static',filename='styles/main-menu.css') }}"
       rel="stylesheet"
     />
-    <link rel="icon" href="./favicon.ico">
+    <link rel="icon" href="templates/favicon.ico">
   </head>
   <body>
     <h1 id="top">Feeder</h1>
@@ -33,9 +33,8 @@
       {% for feed in articles %}
       <div class="card">
         <div class="card-body">
-          <a class="card-title" href="/articles?q={{ feed.uniqueID }}">
-            <b>{{feed.title}}</b></a
-          ><br />
+          <span class="card-text"><a href="/articles?q={{ feed.uniqueID }}"><b>{{ feed.title }}</b></a></span>
+          <br/>
           <span class="text-muted feed-name">{{ feed.name }}</span><br />
           <span class="published-date card-text">{{ feed.published }}</span>
         </div>
