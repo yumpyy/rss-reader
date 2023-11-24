@@ -1,15 +1,14 @@
-# rss-reader
+# RSS Reader
 
-simple rss reader made using flask  
-a centralised way to get your daily news/feed.
+Simple RSS Feed Reader
 
-twitter and youtube rss feed urls can obtained by using alternate privacy focused frontends like [nitter](https://nitter.soopy.moe/) (for twitter) and [invidious](https://inv.in.projectsegfau.lt/)  (for youtube)
+Twitter and Youtube RSS feed urls can obtained using:
+- [nitter](https://nitter.soopy.moe/) : Twitter
+- [invidious](https://inv.in.projectsegfau.lt/) : Youtube
 
-## insallation/usage
+## Insallation/Usage
 
-1. run this command in terminal
-
-linux/macos :
+Linux/MacOS :
 
 ```
 python -m venv env && \
@@ -18,7 +17,7 @@ pip install -r requirements.txt && \
 python app.py
 ```
 
-windows (powershell):
+Windows (powershell):
 
 ```
 python -m venv env && \
@@ -27,4 +26,17 @@ pip install -r requirements.txt && \
 python app.py
 ```
 
-2. head over to localhost:5000 to view the rss reader
+Head over to `localhost:5000` to view the RSS Reader.
+
+## Misc.
+
+A simple service file.
+
+```
+[Unit]
+Description="Local RSS Reader"
+
+[Service]
+WorkingDirectory=<project-folder-location>
+ExecStart=/bin/bash -c 'cd <project-folder-location> && source ./env/bin/activate && python app.py'
+```
