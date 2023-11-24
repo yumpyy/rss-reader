@@ -5,12 +5,6 @@ a centralised way to get your daily news/feed.
 
 twitter and youtube rss feed urls can obtained by using alternate privacy focused frontends like [nitter](https://nitter.soopy.moe/) (for twitter) and [invidious](https://inv.in.projectsegfau.lt/)  (for youtube)
 
-some example rss feeds:
-```
-https://xkcd.com/rss.xml
-https://ravidwivedi.in/posts/index.xml
-```
-
 ## insallation/usage
 
 1. run this command in terminal

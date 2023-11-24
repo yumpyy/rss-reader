@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <title>RSS Reader</title>
+    <title> {{article.title}} | RSS Reader</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
@@ -9,10 +9,10 @@
       href="https://unpkg.com/papercss@1.9.2/dist/paper.css"
     />
     <link
-      href="{{ url_for('static',filename='styles/style.css') }}"
+      href="{{ url_for('static',filename='style.css') }}"
       rel="stylesheet"
     />
-    <link rel="icon" href="favicon.ico">
+    <link href="static/favicon.ico" type="image/x-icon" rel="icon">
   </head>
   <body>
     <ul class="breadcrumb border">

@@ -7,20 +7,22 @@ from htmlCleaning import cleanHTML
 app = Flask(__name__)
 app.jinja_env.autoescape = False
 
-articlesList = db.feedFetch()
+articlesList = db.fetchDataFromSQL()
 print(articlesList)
 
 
 @app.route("/")
-def mainMenu():
+async def mainMenu():
     action = request.args.get("action")
     if action == "refresh":
         print("-------------")
         print("REFRESHING...")
         print("-------------")
+        
+        await db.feedFetch()
 
         global articlesList
-        articlesList = db.feedFetch()
+        articlesList = db.fetchDataFromSQL()
         return render_template("index.html", articles=articlesList)
 
     else:
@@ -53,21 +55,39 @@ def articleRead():
 @app.route("/manage", methods=["POST", "GET"])
 def addFeed():
     if request.method == "GET":
-        return render_template("addfeed.html", urlData=db.urlsFromDatabase())
+        validation = { "method" : "put" }
+
+        return render_template("addfeed.html", urlData=db.urlsFromDatabase(), validation=validation)
 
     name = request.form.get("name")
     action = request.form.get("action")
     url = request.form.get("url")
 
     if action == "Submit":
-        if db.addFeedUrlsToSql(url, name):
-            return render_template("addfeed.html", urlData=db.urlsFromDatabase())
+        if db.rssValidation(url):
+            db.addFeedUrlsToSql(url, name)
+            validation = {
+                    'msg' : "Feed is valid, Added to database.",
+                    'id' : 3,
+                    'class' : "success",
+                    "method" : "put"
+                    }
+
+            return render_template("addfeed.html", urlData=db.urlsFromDatabase(), validation=validation )
         else:
-            return render_template("404.html")
+            validation = {
+                    'msg' : "Feed isn't valid, Couldn't add to database.",
+                    'id' : 5,
+                    'class' : "danger",
+                    "method" : "put"
+                    }
+            return render_template("addfeed.html", urlData=db.urlsFromDatabase(), validation=validation )
 
     elif action == "Delete":
         if db.deleteDataSql(name):
-            return render_template("addfeed.html", urlData=db.urlsFromDatabase())
+            validation = { "method" : "put" }
+
+            return render_template("addfeed.html", urlData=db.urlsFromDatabase(), validation=validation)
         else:
             return render_template("404.html")
 

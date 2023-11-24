@@ -9,16 +9,27 @@
       href="https://unpkg.com/papercss@1.9.2/dist/paper.css"
     />
     <link
-      href="{{ url_for('static',filename='styles/addfeed.css') }}"
+      href="{{ url_for('static',filename='addfeed.css') }}"
       rel="stylesheet"
     />
-    <link rel="icon" href="favicon.ico">
+    <link href="static/favicon.ico" type="image/x-icon" rel="icon" />
   </head>
   <body>
     <ul class="breadcrumb border">
       <li><a class="active" href="/?action=refresh">Home</a></li>
       <li><a href="/manage">Manage</a></li>
     </ul>
+    
+
+    {% if validation.method == "put" %}
+    <input class="alert-state" id="alert-{{ validation.id }}" type="checkbox" />
+    <div class="alert alert-{{ validation.class }} dismissible">
+      {{ validation.msg }}
+      <label class="btn-close" for="alert-{{ validation.id }}">X</label>
+    </div>
+    {% else %}
+    <div style="display: none;"><div>
+    {% endif %}
 
     <div class="row flex-center">
       <div

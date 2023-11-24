@@ -54,6 +54,15 @@ def urlsFromDatabase():
     return urlData
 
 
+def rssValidation(url):
+    validation = feedparser.parse(url).version
+
+    if validation != "":
+        return True
+
+    elif validation == "":
+        return False
+
 def addFeedUrlsToSql(url, name):
     insertCommand = "INSERT INTO feedUrls VALUES (%s, %s)"
 
@@ -61,15 +70,8 @@ def addFeedUrlsToSql(url, name):
     print(f"INSERTION CMD : {insertCommand}, {url}")
     print("---------------------------------------------")
 
-    try:
-        cursor.execute(insertCommand, (url, name))
-        db.commit()
-
-        return True
-
-    except:
-        return False
-
+    cursor.execute(insertCommand, (url, name))
+    db.commit()
 
 def deleteDataSql(name):
     deleteFeedUrls = "DELETE FROM feedUrls WHERE feedName=%s"
@@ -97,7 +99,7 @@ def deleteDataSql(name):
         return False
 
 
-def feedFetch():
+async def feedFetch():
     urlData = urlsFromDatabase()
 
     print("-------------------------")
@@ -144,11 +146,13 @@ def feedFetch():
                     insertCommand,
                     (name, uniqueID, title, published, linkOriginal, content, viewed),
                 )
+
                 db.commit()
             
             else:
                 continue
 
+def fetchDataFromSQL():
     cursor.execute(
         "SELECT * FROM articles ORDER BY STR_TO_DATE(published, '%Y/%m/%d') DESC"
     )
