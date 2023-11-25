@@ -2,6 +2,8 @@
 
 Simple RSS Feed Reader
 
+![Main Page Preview](./images/preview.png)
+
 Twitter and Youtube RSS feed urls can obtained using:
 - [nitter](https://nitter.soopy.moe/) : Twitter
 - [invidious](https://inv.in.projectsegfau.lt/) : Youtube
