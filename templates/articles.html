@@ -16,9 +16,11 @@
   </head>
   <body>
     <ul class="breadcrumb border">
+      <li><a href="/articles?q={{ prevArticleID }}">Previous</a></li>
       <li><a class="active" href="/">Home</a></li>
       <li><a href="/manage">Manage</a></li>
       <li><a href="/articles?fullfetch={{ article.linkOriginal }}">Full Fetch</a></li>
+      <li><a href="/articles?q={{ nextArticleID }}">Next</a></li>
     </ul>
 
     <article class="article">

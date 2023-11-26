@@ -35,16 +35,31 @@ def articleRead():
     ariceleRequestedLink = request.args.get("fullfetch")
 
     for feed in articlesList:
-        if articleRequestedID == feed["uniqueID"]:
+        currentArticleIndex = articlesList.index(feed)
+
+        nextArticleIndex = currentArticleIndex + 1
+        print(nextArticleIndex)
+        prevArticleIndex = currentArticleIndex - 1
+        print(prevArticleIndex)
+
+        if currentArticleIndex == 0:
+            nextArticleIndex, prevArticleIndex = 0, 0
+
+        nextArticleID = articlesList[nextArticleIndex]["uniqueID"]
+        prevArticleID = articlesList[prevArticleIndex]["uniqueID"]
+
+        if articleRequestedID == feed["uniqueID"]: # for article card in main menu
             db.markArticleRead(feed["uniqueID"])
+            
+            return render_template("articles.html", article=feed, 
+            nextArticleID=nextArticleID, prevArticleID=prevArticleID)
 
-            return render_template("articles.html", article=feed)
-
-        elif ariceleRequestedLink == feed["linkOriginal"]:
+        elif ariceleRequestedLink == feed["linkOriginal"]: # for full fetch
             cleanContent = cleanHTML(ariceleRequestedLink)
             feed["content"] = cleanContent
 
-            return render_template("articles.html", article=feed)
+            return render_template("articles.html", article=feed, 
+            nextArticleID=nextArticleID, prevArticleID=prevArticleID)
         else:
             continue
 
