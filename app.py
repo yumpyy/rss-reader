@@ -43,7 +43,7 @@ def articleRead():
         print(prevArticleIndex)
 
         if currentArticleIndex == 0:
-            nextArticleIndex, prevArticleIndex = 0, 0
+            prevArticleIndex = 0
 
         nextArticleID = articlesList[nextArticleIndex]["uniqueID"]
         prevArticleID = articlesList[prevArticleIndex]["uniqueID"]
