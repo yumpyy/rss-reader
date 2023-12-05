@@ -1,4 +1,5 @@
 flask
+flask[async]
 feedparser
 mysql-connector-python
 beautifulsoup4
