@@ -6,10 +6,13 @@ tagsNotAllowed = [
     "h1",
     "button",
     "a",
+    "ul",
+    "li",
     "style",
     "script",
     "link",
     "meta",
+    "video",
     "span",
     "form",
     "textarea",
@@ -34,14 +37,36 @@ def cleanHTML(articleURL):
     html = r.text
 
     soup = BeautifulSoup(html, "html.parser")
+    cleanHTMLCode = ""
 
-    for tag in soup.find_all(tagsNotAllowed):
-        tag.decompose()
+    
+    article = soup.find("article")
 
-    for div in soup.find_all('div'):
-        if not div.contents:
-            div.decompose()
+    if article:
+        for tag in article.find_all(tagsNotAllowed):
+            tag.decompose()
 
-    cleanHTMLCode = soup.prettify()
+        for div in article.find_all():
+            if not div.contents:
+                div.decompose()
 
-    return cleanHTMLCode
+    else:
+        for tag in soup.find_all(tagsNotAllowed):
+            tag.decompose()
+
+        for div in soup.find_all():
+            if not div.contents:
+                div.decompose()
+
+        article = soup
+
+    try:
+        cleanHTMLCode = article.prettify()
+        return cleanHTMLCode
+
+    except AttributeError:
+        return f"""
+    <center>
+        <h2>Couldn't Fetch</h2>
+    </center>
+    """
