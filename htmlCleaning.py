@@ -5,7 +5,7 @@ tagsNotAllowed = [
     "iframe",
     "h1",
     "button",
-    "a",
+    # "a",
     "ul",
     "li",
     "style",
@@ -16,7 +16,8 @@ tagsNotAllowed = [
     "span",
     "form",
     "textarea",
-    "nav"
+    "nav",
+    # "svg"
 ]
 
 headers = {
@@ -42,13 +43,20 @@ def cleanHTML(articleURL):
     
     article = soup.find("article")
 
-    if article:
+    if article is not None:
         for tag in article.find_all(tagsNotAllowed):
             tag.decompose()
 
+
         for div in article.find_all():
             if not div.contents:
-                div.decompose()
+               div.decompose()
+
+            try:
+                for attr in ["style", "class", "id", "type"]:
+                    del div[attr]
+            except AttributeError:
+                continue
 
     else:
         for tag in soup.find_all(tagsNotAllowed):
@@ -56,7 +64,12 @@ def cleanHTML(articleURL):
 
         for div in soup.find_all():
             if not div.contents:
-                div.decompose()
+               div.decompose()
+            try:
+                for attr in ["style", "class", "id", "type"]:
+                    del div[attr]
+            except AttributeError:
+                continue
 
         article = soup
 
