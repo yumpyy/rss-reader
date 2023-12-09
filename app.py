@@ -116,7 +116,9 @@ with open("./credentials.json", "r") as f:
     host = credentials["server-host"]
 
 try:
-    app.run(debug=True, port=port, host=host)
+    # app.run(debug=True, port=port, host=host)
+    if __name__ == '__main__':
+        app.run(port=port, host=host)
 except OSError:
     print(
         "\n\033[31m SOME OTHER SERVICE IS RUNNING ON DEFAULT PORT 5000\nCONSIDER CHANGING PORT IN ./credentials.json \033[0m\n"

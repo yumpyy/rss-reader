@@ -17,7 +17,7 @@ tagsNotAllowed = [
     "form",
     "textarea",
     "nav",
-    # "svg"
+    "svg"
 ]
 
 headers = {
