@@ -12,7 +12,7 @@ tagsNotAllowed = [
     "script",
     "link",
     "meta",
-    "video",
+    # "video",
     "span",
     "form",
     "textarea",
@@ -44,23 +44,21 @@ def cleanHTML(articleURL):
     article = soup.find("article")
 
     if article is not None:
-        for tag in article.find_all(tagsNotAllowed):
-            tag.decompose()
-
-
+        for tagName in tagsNotAllowed:
+            for tag in article.find_all(tagName):
+                tag.decompose()
         for div in article.find_all():
             if not div.contents:
                div.decompose()
-
             try:
                 for attr in ["style", "class", "id", "type"]:
                     del div[attr]
             except AttributeError:
                 continue
-
     else:
-        for tag in soup.find_all(tagsNotAllowed):
-            tag.decompose()
+        for tag_name in tagsNotAllowed:
+            for tag in soup.find_all(tag_name):
+                tag.decompose()
 
         for div in soup.find_all():
             if not div.contents:
@@ -74,7 +72,12 @@ def cleanHTML(articleURL):
         article = soup
 
     try:
+        websiteURL = "https://" + articleURL.split('/')[2] + "/"
+        # print(articleURL)
+        # print(websiteURL)
         cleanHTMLCode = article.prettify()
+        cleanHTMLCode = cleanHTMLCode.replace('src="/',f'src="{websiteURL}')
+        cleanHTMLCode = cleanHTMLCode.replace('href="/',f'href="{websiteURL}')
         return cleanHTMLCode
 
     except AttributeError:
