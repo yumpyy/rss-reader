@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 
+# list of tags to be filtered
 tagsNotAllowed = [
     "iframe",
     "h1",
@@ -43,13 +44,17 @@ def cleanHTML(articleURL):
     
     article = soup.find("article")
 
+    # If the article tag is found get the content within that tag to reduce the amount of bloat to be filtered
     if article is not None:
         for tagName in tagsNotAllowed:
             for tag in article.find_all(tagName):
                 tag.decompose()
+        # filter out div tags which dont have any cotent in it
         for div in article.find_all():
             if not div.contents:
                div.decompose()
+
+            # filter out junk from tags
             try:
                 for attr in ["style", "class", "id", "type"]:
                     del div[attr]
@@ -73,9 +78,9 @@ def cleanHTML(articleURL):
 
     try:
         websiteURL = "https://" + articleURL.split('/')[2] + "/"
-        # print(articleURL)
-        # print(websiteURL)
         cleanHTMLCode = article.prettify()
+
+        # change relative links to absolute
         cleanHTMLCode = cleanHTMLCode.replace('src="/',f'src="{websiteURL}')
         cleanHTMLCode = cleanHTMLCode.replace('href="/',f'href="{websiteURL}')
         return cleanHTMLCode
