@@ -4,26 +4,11 @@ Simple RSS Feed Reader
 
 ![Main Page Preview](./images/preview.png)
 
-Twitter and Youtube RSS feed urls can obtained using:
-- [nitter](https://nitter.soopy.moe/) : Twitter
-- [invidious](https://inv.in.projectsegfau.lt/) : Youtube
-
 ## Insallation/Usage
-
-Linux/MacOS :
 
 ```
 python -m venv env && \
 source ./env/bin/activate && \
-pip install -r requirements.txt && \
-python app.py
-```
-
-Windows (powershell):
-
-```
-python -m venv env && \
-./env/bin/Activate.ps1 && \
 pip install -r requirements.txt && \
 python app.py
 ```
