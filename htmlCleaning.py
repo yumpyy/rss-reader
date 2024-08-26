@@ -37,11 +37,8 @@ def cleanHTML(articleURL):
     """
 
     html = r.text
-
     soup = BeautifulSoup(html, "html.parser")
     cleanHTMLCode = ""
-
-    
     article = soup.find("article")
 
     # If the article tag is found get the content within that tag to reduce the amount of bloat to be filtered
@@ -51,28 +48,36 @@ def cleanHTML(articleURL):
                 tag.decompose()
         # filter out div tags which dont have any cotent in it
         for div in article.find_all():
-            if not div.contents:
-               div.decompose()
-
-            # filter out junk from tags
             try:
                 for attr in ["style", "class", "id", "type"]:
+                    if div.name == 'img' and attr in ['width', 'height']:
+                        continue  # Skip deleting width and height attributes from img tags
                     del div[attr]
             except AttributeError:
                 continue
+
+            if div.name not in ['img', 'video'] and not div.contents:
+                div.decompose()
     else:
         for tag_name in tagsNotAllowed:
             for tag in soup.find_all(tag_name):
                 tag.decompose()
 
-        for div in soup.find_all():
-            if not div.contents:
-               div.decompose()
+        for tag in soup.find_all():
             try:
-                for attr in ["style", "class", "id", "type"]:
-                    del div[attr]
+                for attr in list(tag.attrs.keys()):
+                    if attr in ["href", "src"]:
+                        continue
+                    if tag.name == 'img' and attr in ['width', 'height']:
+                        continue  # Skip deleting width and height attributes from img tags
+                    else:
+                        del tag[attr]
             except AttributeError:
                 continue
+
+            if tag.name not in ['img', 'video'] and not tag.contents:
+                tag.decompose()
+
 
         article = soup
 

@@ -8,8 +8,6 @@ app = Flask(__name__)
 app.jinja_env.autoescape = False
 
 articlesList = db.fetchDataFromSQL()
-print(articlesList)
-
 
 @app.route("/")
 async def mainMenu():
@@ -32,15 +30,13 @@ async def mainMenu():
 @app.route("/articles")
 def articleRead():
     articleRequestedID = request.args.get("q")
-    ariceleRequestedLink = request.args.get("fullfetch")
+    articleRequestedLink = request.args.get("fullfetch")
 
     for feed in articlesList:
         currentArticleIndex = articlesList.index(feed)
 
         nextArticleIndex = currentArticleIndex + 1
-        print(nextArticleIndex)
         prevArticleIndex = currentArticleIndex - 1
-        print(prevArticleIndex)
 
         if currentArticleIndex == 0:
             prevArticleIndex = 0
@@ -54,8 +50,8 @@ def articleRead():
             return render_template("articles.html", article=feed, 
             nextArticleID=nextArticleID, prevArticleID=prevArticleID)
 
-        elif ariceleRequestedLink == feed["linkOriginal"]: # for full fetch
-            cleanContent = cleanHTML(ariceleRequestedLink)
+        elif articleRequestedLink == feed["linkOriginal"]: # for full fetch
+            cleanContent = cleanHTML(articleRequestedLink)
             feed["content"] = cleanContent
 
             return render_template("articles.html", article=feed, 
