@@ -5,5 +5,5 @@ env/
 test*
 *.xml
 todo
-credentials*
+credentials.json
 project-report*
