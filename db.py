@@ -10,15 +10,12 @@ with open("./credentials.json", "r") as f:
     password = credentials["password"]
     host = credentials["db-host"]
 
-    # print(username, password)
-
     if username == "":
         print("------------------------------------------------------")
         print("\n\033[31mSET YOUR USERNAME AND PASSWORD IN ./credentials.json\033[0m\n")
         print("------------------------------------------------------")
 
         exit()
-
 
 db = m.connect(host=host, user=username, passwd=password)
 cursor = db.cursor()
@@ -41,15 +38,10 @@ except m.Error as e:
 
     exit()
 
-
 def urlsFromDatabase():
     cursor.execute("SELECT * FROM feedUrls")
     output = cursor.fetchall()
     urlData = output
-
-    # print("-------------------------")
-    # print(f"Fetched Data : {urlData}")
-    # print("-------------------------")
 
     return urlData
 
@@ -123,7 +115,6 @@ async def feedFetch():
             existingArticle = cursor.fetchone()
 
             if existingArticle is None:
-
                 if "published_parsed" in parser["entries"][x]:
                     published = parser["entries"][x]["published_parsed"]
                 else:
@@ -140,13 +131,11 @@ async def feedFetch():
                     content = parser["entries"][x]["summary"]
 
                 viewed = "n"
-
                 insertCommand = "INSERT INTO articles VALUES (%s, %s, %s, %s, %s, %s, %s)"
                 cursor.execute(
                     insertCommand,
                     (name, uniqueID, title, published, linkOriginal, content, viewed),
                 )
-
                 db.commit()
             
             else:
@@ -159,7 +148,6 @@ def fetchDataFromSQL():
     fetchedData = cursor.fetchall()
 
     articles = []
-
     for article in fetchedData:
         feed = {
             "name": article[0],
@@ -177,6 +165,5 @@ def fetchDataFromSQL():
 
 def markArticleRead(uniqueID):
     updateCommand = "UPDATE articles SET viewed = 'y' WHERE uniqueID=%s"
-
     cursor.execute(updateCommand, (uniqueID,))
     db.commit()
