@@ -2,81 +2,79 @@ import json
 from flask import Flask, render_template, request
 
 import db
-from htmlCleaning import cleanHTML
+from sanitize import sanitize
 
 app = Flask(__name__)
 app.jinja_env.autoescape = False
 
-articlesList = db.fetchDataFromSQL()
+articles = db.fetch_data_from_db()
 
 @app.route("/")
-async def mainMenu():
+async def main_menu():
     action = request.args.get("action")
     if action == "refresh":
         print("-------------")
         print("REFRESHING...")
         print("-------------")
         
-        await db.feedFetch()
+        await db.feed_fetch()
 
-        global articlesList
-        articlesList = db.fetchDataFromSQL()
-        return render_template("index.html", articles=articlesList)
+        global articles
+        articles = db.fetch_data_from_db()
+        return render_template("index.html", articles=articles)
 
     else:
-        return render_template("index.html", articles=articlesList)
-
+        return render_template("index.html", articles=articles)
 
 @app.route("/articles")
-def articleRead():
-    articleRequestedID = request.args.get("q")
-    articleRequestedLink = request.args.get("fullfetch")
+def read_article():
+    article_id = request.args.get("q")
+    article_link = request.args.get("fullfetch")
 
-    for feed in articlesList:
-        currentArticleIndex = articlesList.index(feed)
+    for feed in articles:
+        article_index_current = articles.index(feed)
 
-        nextArticleIndex = currentArticleIndex + 1
-        prevArticleIndex = currentArticleIndex - 1
+        arcticle_index_next = article_index_current + 1
+        arcticle_index_prev = article_index_current - 1
 
-        if currentArticleIndex == 0:
-            prevArticleIndex = 0
+        if article_index_current == 0:
+            arcticle_index_prev = 0
 
-        nextArticleID = articlesList[nextArticleIndex]["uniqueID"]
-        prevArticleID = articlesList[prevArticleIndex]["uniqueID"]
+        article_id_next = articles[arcticle_index_next]["uniq_id"]
+        article_id_prev = articles[arcticle_index_prev]["uniq_id"]
 
-        if articleRequestedID == feed["uniqueID"]: # for article card in main menu
-            db.markArticleRead(feed["uniqueID"])
+        if article_id == feed["uniq_id"]: # for article card in main menu
+            db.mark_article_read(feed["uniq_id"])
             
             return render_template("articles.html", article=feed, 
-            nextArticleID=nextArticleID, prevArticleID=prevArticleID)
+            article_id_next=article_id_next, article_id_prev=article_id_prev)
 
-        elif articleRequestedLink == feed["linkOriginal"]: # for full fetch
-            cleanContent = cleanHTML(articleRequestedLink)
-            feed["content"] = cleanContent
+        elif article_link == feed["orginal_link"]: # for full fetch
+            sanitized_content = sanitize(article_link)
+            feed["content"] = sanitized_content
 
             return render_template("articles.html", article=feed, 
-            nextArticleID=nextArticleID, prevArticleID=prevArticleID)
+            article_id_next=article_id_next, article_id_prev=article_id_prev)
         else:
             continue
 
     return render_template("404.html")
 
-
 # page managing feed urls
 @app.route("/manage", methods=["POST", "GET"])
-def addFeed():
+def add_feed():
     if request.method == "GET":
         validation = { "method" : "put" }
 
-        return render_template("addfeed.html", urlData=db.urlsFromDatabase(), validation=validation)
+        return render_template("addfeed.html", url_data=db.fetch_urls_from_db(), validation=validation)
 
     name = request.form.get("name")
     action = request.form.get("action")
     url = request.form.get("url")
 
     if action == "Submit":
-        if db.rssValidation(url):
-            db.addFeedUrlsToSql(url, name)
+        if db.validate_rss(url):
+            db.add_feed_urls_to_db(url, name)
             validation = {
                     'msg' : "Feed is valid, Added to database.",
                     'id' : 3,
@@ -84,7 +82,7 @@ def addFeed():
                     "method" : "put"
                     }
 
-            return render_template("addfeed.html", urlData=db.urlsFromDatabase(), validation=validation )
+            return render_template("addfeed.html", url_data=db.fetch_urls_from_db(), validation=validation )
         else:
             validation = {
                     'msg' : "Feed isn't valid, Couldn't add to database.",
@@ -92,19 +90,18 @@ def addFeed():
                     'class' : "danger",
                     "method" : "put"
                     }
-            return render_template("addfeed.html", urlData=db.urlsFromDatabase(), validation=validation )
+            return render_template("addfeed.html", url_data=db.fetch_urls_from_db(), validation=validation )
 
     elif action == "Delete":
-        if db.deleteDataSql(name):
+        if db.delete_from_db(name):
             validation = { "method" : "put" }
 
-            return render_template("addfeed.html", urlData=db.urlsFromDatabase(), validation=validation)
+            return render_template("addfeed.html", url_data=db.fetch_urls_from_db(), validation=validation)
         else:
             return render_template("404.html")
 
     else:
-        return render_template("addfeed.html", urlData=db.urlsFromDatabase())
-
+        return render_template("addfeed.html", url_data=db.fetch_urls_from_db())
 
 with open("./credentials.json", "r") as f:
     credentials = json.load(f)

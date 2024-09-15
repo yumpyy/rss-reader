@@ -26,7 +26,13 @@ try:
         "CREATE TABLE IF NOT EXISTS reader.feedUrls (urls VARCHAR(900), feedName VARCHAR(255))"
     )
     cursor.execute(
-        "CREATE TABLE IF NOT EXISTS reader.articles (name VARCHAR(255) NOT NULL, uniqueID VARCHAR(32) NOT NULL, title VARCHAR(255) NOT NULL, published VARCHAR(255) NOT NULL, linkOriginal VARCHAR(255) NOT NULL, content MEDIUMTEXT CHARACTER SET utf8mb4, viewed ENUM('y', 'n'), UNIQUE(title))"
+        """CREATE TABLE IF NOT EXISTS reader.articles (name VARCHAR(255) NOT NULL,
+        uniq_id VARCHAR(32) NOT NULL,
+        title VARCHAR(255) NOT NULL,
+        published VARCHAR(255) NOT NULL,
+        orginal_link VARCHAR(255) NOT NULL,
+        content MEDIUMTEXT CHARACTER SET utf8mb4,
+        viewed ENUM('y', 'n'), UNIQUE(title))"""
     )
     cursor.execute("USE reader")
 
@@ -38,15 +44,14 @@ except m.Error as e:
 
     exit()
 
-def urlsFromDatabase():
+def fetch_urls_from_db():
     cursor.execute("SELECT * FROM feedUrls")
     output = cursor.fetchall()
-    urlData = output
+    url_data = output
 
-    return urlData
+    return url_data
 
-
-def rssValidation(url):
+def validate_rss(url):
     validation = feedparser.parse(url).version
 
     if validation != "":
@@ -55,27 +60,27 @@ def rssValidation(url):
     elif validation == "":
         return False
 
-def addFeedUrlsToSql(url, name):
-    insertCommand = "INSERT INTO feedUrls VALUES (%s, %s)"
+def add_feed_urls_to_db(url, name):
+    insert_command = "INSERT INTO feedUrls VALUES (%s, %s)"
 
     print("---------------------------------------------")
-    print(f"INSERTION CMD : {insertCommand}, {url}")
+    print(f"INSERTION CMD : {insert_command}, {url}")
     print("---------------------------------------------")
 
-    cursor.execute(insertCommand, (url, name))
+    cursor.execute(insert_command, (url, name))
     db.commit()
 
-def deleteDataSql(name):
-    deleteFeedUrls = "DELETE FROM feedUrls WHERE feedName=%s"
-    deleteRelatedArticles = "DELETE FROM articles WHERE name=%s"
+def delete_from_db(name):
+    delete_feed_urls_command = "DELETE FROM feedUrls WHERE feedName=%s"
+    delete_articles_command = "DELETE FROM articles WHERE name=%s"
 
     print("---------------------------------------------")
-    print(f"DELETION CMD : {deleteFeedUrls % name}")
+    print(f"DELETION CMD : {delete_feed_urls_command % name}")
     print("---------------------------------------------")
 
     try:
-        cursor.execute(deleteFeedUrls, (name,))
-        cursor.execute(deleteRelatedArticles, (name,))
+        cursor.execute(delete_feed_urls_command, (name,))
+        cursor.execute(delete_articles_command, (name,))
         db.commit()
 
         print("---------------------------------------------")
@@ -90,16 +95,15 @@ def deleteDataSql(name):
 
         return False
 
-
-async def feedFetch():
-    urlData = urlsFromDatabase()
+async def feed_fetch():
+    url_data = fetch_urls_from_db()
 
     print("-------------------------")
     print(f"Full Url Data: ")
-    print(f"{urlData}")
+    print(f"{url_data}")
     print("-------------------------")
 
-    for url in urlData:
+    for url in url_data:
         print("-------------------------")
         print(f"Parsing : {url}")
         print("-------------------------")
@@ -108,13 +112,13 @@ async def feedFetch():
 
         for x in range(len(parser["entries"])):
             name = url[1]
-            uniqueID = uuid.uuid4().hex
+            uniq_id = uuid.uuid4().hex
             title = parser["entries"][x]["title"]
 
             cursor.execute("SELECT * FROM articles WHERE title=%s", (title,))
-            existingArticle = cursor.fetchone()
+            existing_article = cursor.fetchone()
 
-            if existingArticle is None:
+            if existing_article is None:
                 if "published_parsed" in parser["entries"][x]:
                     published = parser["entries"][x]["published_parsed"]
                 else:
@@ -123,7 +127,7 @@ async def feedFetch():
                 published = list(published)
                 published = f"{published[0]}/{published[1]}/{published[2]} {published[3]}:{published[4]}"
 
-                linkOriginal = parser["entries"][x]["links"][0]["href"]
+                orginal_link = parser["entries"][x]["links"][0]["href"]
 
                 if "content" in parser["entries"][x]:
                     content = parser["entries"][x]["content"][0]["value"]
@@ -131,30 +135,30 @@ async def feedFetch():
                     content = parser["entries"][x]["summary"]
 
                 viewed = "n"
-                insertCommand = "INSERT INTO articles VALUES (%s, %s, %s, %s, %s, %s, %s)"
+                insert_command = "INSERT INTO articles VALUES (%s, %s, %s, %s, %s, %s, %s)"
                 cursor.execute(
-                    insertCommand,
-                    (name, uniqueID, title, published, linkOriginal, content, viewed),
+                    insert_command,
+                    (name, uniq_id, title, published, orginal_link, content, viewed),
                 )
                 db.commit()
             
             else:
                 continue
 
-def fetchDataFromSQL():
+def fetch_data_from_db():
     cursor.execute(
         "SELECT * FROM articles ORDER BY STR_TO_DATE(published, '%Y/%m/%d') DESC"
     )
-    fetchedData = cursor.fetchall()
+    fetched_data = cursor.fetchall()
 
     articles = []
-    for article in fetchedData:
+    for article in fetched_data:
         feed = {
             "name": article[0],
-            "uniqueID": article[1],
+            "uniq_id": article[1],
             "title": article[2],
             "published": article[3],
-            "linkOriginal": article[4],
+            "orginal_link": article[4],
             "content": article[5],
             "viewed": article[6],
         }
@@ -162,8 +166,7 @@ def fetchDataFromSQL():
 
     return articles
 
-
-def markArticleRead(uniqueID):
-    updateCommand = "UPDATE articles SET viewed = 'y' WHERE uniqueID=%s"
-    cursor.execute(updateCommand, (uniqueID,))
+def mark_article_read(uniq_id):
+    update_command = "UPDATE articles SET viewed = 'y' WHERE uniq_id=%s"
+    cursor.execute(update_command, (uniq_id,))
     db.commit()

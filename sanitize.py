@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 
 # list of tags to be filtered
-tagsNotAllowed = [
+tags_not_allowed = [
     "iframe",
     "h1",
     "button",
@@ -25,7 +25,7 @@ headers = {
         "User-Agent" : "Mozilla/5.0 (Linux; Android 11; SAMSUNG SM-G973U) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/14.2 Chrome/87.0.4280.141 Mobile Safari/537.36"
         }
 
-def cleanHTML(articleURL):
+def sanitize(articleURL):
     try:
         r = requests.get(articleURL, headers=headers)
     except requests.exceptions.ConnectionError as e:
@@ -38,12 +38,12 @@ def cleanHTML(articleURL):
 
     html = r.text
     soup = BeautifulSoup(html, "html.parser")
-    cleanHTMLCode = ""
+    sanitized_code = ""
     article = soup.find("article")
 
     # If the article tag is found get the content within that tag to reduce the amount of bloat to be filtered
     if article is not None:
-        for tagName in tagsNotAllowed:
+        for tagName in tags_not_allowed:
             for tag in article.find_all(tagName):
                 tag.decompose()
         # filter out div tags which dont have any cotent in it
@@ -59,7 +59,7 @@ def cleanHTML(articleURL):
             if div.name not in ['img', 'video'] and not div.contents:
                 div.decompose()
     else:
-        for tag_name in tagsNotAllowed:
+        for tag_name in tags_not_allowed:
             for tag in soup.find_all(tag_name):
                 tag.decompose()
 
@@ -82,13 +82,13 @@ def cleanHTML(articleURL):
         article = soup
 
     try:
-        websiteURL = "https://" + articleURL.split('/')[2] + "/"
-        cleanHTMLCode = article.prettify()
+        url = "https://" + articleURL.split('/')[2] + "/"
+        sanitized_code = article.prettify()
 
         # change relative links to absolute
-        cleanHTMLCode = cleanHTMLCode.replace('src="/',f'src="{websiteURL}')
-        cleanHTMLCode = cleanHTMLCode.replace('href="/',f'href="{websiteURL}')
-        return cleanHTMLCode
+        sanitized_code = sanitized_code.replace('src="/',f'src="{url}')
+        sanitized_code = sanitized_code.replace('href="/',f'href="{url}')
+        return sanitized_code
 
     except AttributeError:
         return f"""
