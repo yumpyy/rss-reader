@@ -5,7 +5,6 @@ import db
 from sanitize import sanitize
 
 app = Flask(__name__)
-app.jinja_env.autoescape = False
 
 articles = db.fetch_data_from_db()
 

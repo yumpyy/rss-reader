@@ -30,7 +30,7 @@
       <span class="article-meta" style="font-size: 17px;">
         <u><a id="author-link" href="{{ article.linkOriginal }}"> {{ article.name }} </a></u> on {{ article.published }}</span>
       <br />
-      <p>{{ article.content }}</p>
+      <p>{{ article.content|safe }}</p>
     </article>
 
     <div class="to-top">
