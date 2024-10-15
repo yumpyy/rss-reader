@@ -1,9 +1,8 @@
 __pycache__/
-env/
-
-# Testing files
+venv/
 test*
 *.xml
+*.log
 todo
 credentials.json
 project-report*
