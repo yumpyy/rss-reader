@@ -1,7 +1,14 @@
-import mysql.connector as m
 import json
-import feedparser
 import uuid
+import os.path
+import sys
+
+import mysql.connector as m
+import feedparser
+
+if not os.path.isfile('./credentials.json'):
+    print("'credentials.json' doesn't exist.")
+    sys.exit()
 
 with open("./credentials.json", "r") as f:
     credentials = json.load(f)
@@ -10,12 +17,18 @@ with open("./credentials.json", "r") as f:
     password = credentials["password"]
     host = credentials["db-host"]
 
-    if username == "":
-        print("------------------------------------------------------")
-        print("\n\033[31mSET YOUR USERNAME AND PASSWORD IN ./credentials.json\033[0m\n")
-        print("------------------------------------------------------")
+    if username == "" or password == "":
+        print("Credentials for database are not set. Do you want to set it? [y/N]")
+        choice = input("> ")
+        if choice.lower() in ['y', 'yes']:
+            username = input("Username for database: ")
+            password = input("Password for database: ")
 
-        exit()
+            credentials['username'] = username
+            credentials['password'] = password
+            json.dump(credentials, open('./credentials.json', 'w'), indent=4)
+
+        sys.exit()
 
 db = m.connect(host=host, user=username, passwd=password)
 cursor = db.cursor()
@@ -42,7 +55,7 @@ except m.Error as e:
     print(f"\033[31m Error Message : {e.msg}\033[0m")
     print("---------------------------------------------")
 
-    exit()
+    sys.exit()
 
 def fetch_urls_from_db():
     cursor.execute("SELECT * FROM feedUrls")
