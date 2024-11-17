@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>RSS Reader</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/papercss@1.9.2/dist/paper.css"
+    />
+    <link rel="stylesheet" href="https://www.nerdfonts.com/assets/css/webfont.css">
+    <link
+      href="{{ url_for('static',filename='main-menu.css') }}"
+      rel="stylesheet"
+    />
+    <!-- <link href="static/favicon.ico" type="image/x-icon" rel="icon"> -->
+    <link href="static/favicon.gif" type="image/gif" rel="icon">
+  </head>
+  <body>
+    <h1 id="top">Feeder</h1>
+    <div class="navbar">
+      <ul class="breadcrumb border">
+        <li><a class="active" href="/">Home</a></li>
+        <li><a href="/manage">Manage</a></li>
+        <li><a href="/?action=refresh">Refresh</a></li>
+      </ul>
+    </div>
+
+    <!-- <div class="tag-filter flex-center row child-borders"> -->
+    <!--   <a href="paper-btn margin"></a> -->
+    <!-- </div> -->
+
+    <div class="feeds-container">
+      {% for feed in articles %}
+      <div class="card">
+        <div class="card-body">
+          <span class="card-text"><a href="/articles?q={{ feed.uniqueID }}"><b>{{ feed.title }}</b></a></span>
+          <br/>
+          <span class="text-muted feed-name">{{ feed.name }}</span><br />
+          <span class="published-date card-text">{{ feed.published }}</span>
+        </div>
+      </div>
+      {%endfor%}
+    </div>
+
+    <div class="to-top">
+      <a class="top-btn" href="#top">^</a>
+    </div>
+  </body>
+</html>

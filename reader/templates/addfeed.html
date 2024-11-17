@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>RSS Reader</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/papercss@1.9.2/dist/paper.css"
+    />
+    <link
+      href="{{ url_for('static',filename='addfeed.css') }}"
+      rel="stylesheet"
+    />
+    <!-- <link href="static/favicon.ico" type="image/x-icon" rel="icon" /> -->
+    <link href="static/favicon.gif" type="image/gif" rel="icon">
+  </head>
+  <body>
+    <ul class="breadcrumb border">
+      <li><a class="active" href="/?action=refresh">Home</a></li>
+      <li><a href="/manage">Manage</a></li>
+    </ul>
+    
+
+    {% if validation.method == "put" %}
+    <input class="alert-state" id="alert-{{ validation.id }}" type="checkbox" />
+    <div class="alert alert-{{ validation.class }} dismissible">
+      {{ validation.msg }}
+      <label class="btn-close" for="alert-{{ validation.id }}">X</label>
+    </div>
+    {% else %}
+    <div style="display: none;"><div>
+    {% endif %}
+
+    <div class="row flex-center">
+      <div
+        class="form-container sm-3 col border border-5 border-primary sm-4 col"
+      >
+        <form action="/manage" method="post">
+          <div>
+            <label for="name">Name</label><br />
+            <input id="text18" type="text" name="name" /><br />
+          </div>
+
+          <div>
+            <label for="url">URL</label><br />
+            <input type="text" name="url" /><br /><br />
+          </div>
+
+          <input type="hidden" name="action" value="Submit" />
+          <input class="btn-secondary-outline" type="submit" value="Submit" />
+        </form>
+      </div>
+
+      <div
+        class="form-container sm-3 col border border-6 border-primary sm-4 col"
+      >
+        <form action="/manage" method="post">
+          <div>
+            <label for="name">Name</label><br />
+            <input id="text18" type="text" name="name" /><br />
+          </div>
+
+          <input type="hidden" name="action" value="Delete" />
+          <input class="btn-secondary-outline" type="submit" value="Delete" />
+        </form>
+      </div>
+    </div>
+
+    <br /><br />
+    <hr />
+    <br /><br />
+
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>URL</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for url, name in urlData %}
+        <tr>
+          <td>{{ name }}</td>
+          <td>{{ url }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </body>
+</html>

@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title> {{article.title}} | RSS Reader</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/papercss@1.9.2/dist/paper.css"
+    />
+    <link
+      href="{{ url_for('static',filename='style.css') }}"
+      rel="stylesheet"
+    />
+    <!-- <link href="static/favicon.ico" type="image/x-icon" rel="icon"> -->
+    <link href="static/favicon.gif" type="image/gif" rel="icon">
+  </head>
+  <body>
+    <ul class="breadcrumb border">
+      <li><a href="/articles?q={{ prevArticleID }}">Previous</a></li>
+      <li><a class="active" href="/">Home</a></li>
+      <li><a href="/manage">Manage</a></li>
+      <li><a href="/articles?fullfetch={{ article.linkOriginal }}">Full Fetch</a></li>
+      <li><a href="/articles?q={{ nextArticleID }}">Next</a></li>
+    </ul>
+
+    <article class="article">
+      <h1 id="top" class="article-title text-secondary">{{ article.title }}</h1>
+
+      <span class="article-meta" style="font-size: 17px;">
+        <u><a id="author-link" href="{{ article.linkOriginal }}"> {{ article.name }} </a></u> on {{ article.published }}</span>
+      <br />
+      <p>{{ article.content|safe }}</p>
+    </article>
+
+    <div class="to-top">
+      <a class="top-btn" href="#top">^</a>
+    </div>
+  </body>
+</html>
