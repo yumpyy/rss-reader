@@ -1,7 +1,0 @@
-[Unit]
-Description="Local RSS Reader"
-
-[Service]
-# change project-folder-location below
-WorkingDirectory=<project-folder-location>
-ExecStart=/bin/bash -c 'cd <project-folder-location> && source ./env/bin/activate && python app.py'
